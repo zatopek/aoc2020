@@ -18,10 +18,9 @@ fn is_valid(line: String) -> bool {
     let rule_split: Vec<&str> = rule.split(" ").collect();
     let range = rule_split[0].trim();
     let range_split: Vec<&str> = range.split("-").collect();
-    let min = range_split[0].trim().parse::<usize>().unwrap();
-    let max = range_split[1].trim().parse::<usize>().unwrap();
-    let character = rule_split[1].trim();
-    let password = split[1].trim();
-    let count = password.matches(character).count();
-    count >= min && count <= max
+    let exist = range_split[0].trim().parse::<usize>().unwrap();
+    let not_exist = range_split[1].trim().parse::<usize>().unwrap();
+    let character = rule_split[1].trim().parse::<char>().unwrap();
+    let password: Vec<char> = split[1].trim().chars().collect();
+    (password[exist-1] == character && password[not_exist-1] != character) || (password[exist-1] != character && password[not_exist-1] == character)
 }
