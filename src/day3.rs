@@ -14,8 +14,12 @@ pub fn day3() {
     println!("Total trees encountered are {}", count4);
     let count5 = count_trees_on_slope(&lines, 1, 2);
     println!("Total trees encountered are {}", count5);
-}
 
+    println!(
+        "Product of all the counts are {}",
+        count1 * count2 * count3 * count4 * count5
+    );
+}
 
 pub fn count_trees_on_slope(forest: &Vec<Vec<char>>, right: usize, down: usize) -> usize {
     let mut startingx = 0;
