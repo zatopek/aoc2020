@@ -13,19 +13,34 @@ pub mod input_readers {
             .collect()
     }
     pub fn count_group_count(lines: &Vec<String>) -> usize {
-        let mut alphabets: [bool; 26] = [false; 26];
+        let mut group_choices: [bool; 26] = [true; 26];
+        let mut line_choices: [bool; 26] = [false; 26];
+        let mut pristine = true;
         let mut count = 0;
         for line in lines {
+            if !pristine {
+                for i in 0..26 {
+                    group_choices[i] = group_choices[i] && line_choices[i];
+                    println!("Literal {} is {}", i, group_choices[i]);
+                }
+                pristine = false;
+            }
             if line.trim().len() == 0 {
-                for alphabet in alphabets.iter() {
-                    if *alphabet {
-                        count = count + 1;
+                println!("Starting count is {}", count);
+                for choice in group_choices.iter() {
+                    if *choice {
+                        count = count + 1
                     }
                 }
-                alphabets = [false; 26];
+                group_choices = [true; 26];
+                pristine = true;
+                println!("Count in this group is {}", count);
             }
+            line_choices = [false; 26];
             for literal in line.chars() {
-                alphabets[((literal as i8) as usize) - 97] = true;
+                line_choices[((literal as i8) as usize) - 97] = true;
+                println!("Found {}", literal);
+                pristine = false;
             }
         }
         count
@@ -39,7 +54,7 @@ mod test {
 
     #[test]
     fn check_count() {
-        let lines = input_readers::read_strings_as_vector("day6.txt");
-        assert_eq!(input_readers::count_group_count(&lines), 11);
+        let lines = input_readers::read_strings_as_vector("day6_test.txt");
+        assert_eq!(input_readers::count_group_count(&lines), 6);
     }
 }
